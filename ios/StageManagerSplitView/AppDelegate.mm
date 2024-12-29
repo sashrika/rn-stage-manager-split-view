@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import "SceneDelegate.h"
 
 @implementation AppDelegate
 
@@ -11,7 +12,30 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+  return YES;
+}
+
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+    restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        // Handle universal links
+    }
+    return YES;
+}
+
+// Add support for scene sessions
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options
+{
+    UISceneConfiguration *configuration = [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+    configuration.delegateClass = [SceneDelegate class];
+    return configuration;
+}
+
+- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions
+{
+    // Handle discarded scene sessions if needed
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
